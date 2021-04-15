@@ -111,8 +111,9 @@ swrl_file_rule(NS,[Args,Rule]) --> ":-", swrl_file_args(Args), ",", !, swrl_file
 swrl_file_rule(NS,[[],Rule])   --> ":-", swrl_file_rule_(NS,Rule), !.
 swrl_file_rule(NS,Rule)        --> [_], swrl_file_rule(NS,Rule).
 swrl_file_rule_(NS,RuleTerm) -->
-  blanks, string(RulesCodes), ".",
-  { atom_codes(RuleAtom, RulesCodes),!,
+  blanks, string(RulesCodes), ")", blanks, ".",
+  { atom_codes(RuleAtom1, RulesCodes),
+    atom_concat(RuleAtom1, ')', RuleAtom), !,
     swrl_phrase(RuleTerm, RuleAtom, NS) }, !.
 
 %%
