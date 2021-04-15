@@ -23,7 +23,7 @@
     ]).
 
 :- use_module(library('db/obda'), [ access/2 ]).
-
+:- use_module(library('utility/notify'), [ notify/1 ]).
 
 %% holds(+Query) is nondet.
 %
@@ -99,7 +99,8 @@ holds(S,P,O) +>
   { is_object_property(P), ! },
   % O1 should be the bare IRI atom
   { strip_operator_(O,O1,=), atom(O1) },
-  triple(S,P,string(O1)).
+  triple(S,P,string(O1)),
+  notify(object_property(S, P, O)).
 
 holds(S,P,DataTerm) +>
   { is_data_property(P), ! },
@@ -110,7 +111,8 @@ holds(S,P,DataTerm) +>
   { data_base_type_(P,DataValue,BaseType) },
   %%
   { Term=..[BaseType,DataValue] },
-  holds_data(S,P,unit(Term,DataUnit)).
+  holds_data(S,P,unit(Term,DataUnit)),
+  notify(data_property(S, P, DataTerm)).
 
 holds(_,P,_) +>
 	{	log_error(type_error(owl_property,P)),
