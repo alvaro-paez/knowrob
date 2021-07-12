@@ -39,6 +39,7 @@ assert_holds_property_(P0,P1) :- assertz(holds_property_(P0,P1)).
 %
 infer( holds(S,P,=(unit(Value,Unit))),
        holds(S,P,=(unit(Value,Unit))), QScope,FScope) :-
+  is_data_property(P),
   !,
   % strip type
   % TODO: do not ignore data type
