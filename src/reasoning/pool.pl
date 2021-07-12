@@ -85,14 +85,14 @@ infer1(Module,Query,QueryStr,Fact,QScope,FScope) :-
   add_to_cache_(Module,Query,QueryStr),
   Options=[skip_invalidate(true)],
   % FIXME: better use thread queues to yield a resut as soon as it was inferred
-  findall([X,Y], (
+  %findall([X,Y], (
     % FIXME: do not invalidate cache for self?
-    call((:(Module,infer(Query,X,QScope,Y)))),
-    ( tell(X,[Options,Y]) -> true ; (
-      print_message(error, infer(failed(tell(X,Y))))
-    ))
-  ), Results),
-  member([Fact,FScope],Results),
+    call((:(Module,infer(Query,Fact,QScope,FScope)))),
+    ( tell(Fact,[Options,FScope]) -> true ; (
+      print_message(error, infer(failed(tell(Fact,FScope))))
+    )),
+  %), Results),
+  %member([Fact,FScope],Results),
   log_debug(reasoner(Module,inferred(Fact))),
   % FIXME
   Query=Fact.
