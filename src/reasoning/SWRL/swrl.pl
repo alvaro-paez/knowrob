@@ -354,8 +354,11 @@ swrlx_get_individual(Pattern, Individual) :-
    swrlx_individual_map(Pattern, Individual).
 
 %% swrlx commands
-swrlx_make_individual(A, _) :-
-  ground(A).
+swrlx_make_individual(A, PatternArgs) :-
+  ground(A),
+  maplist(ground, PatternArgs),
+  atomic_list_concat(PatternArgs, Pattern),
+  swrlx_get_individual(Pattern, A).
 
 swrlx_make_individual(A, PatternArgs) :-
   \+ ground(A),
